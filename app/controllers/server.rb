@@ -17,8 +17,7 @@ module TrafficSpy
 
     post '/sources/:id/data' do |id|
       client = Client.where(identifier: id)
-      # require 'pry'; binding.pry
-      result = PayloadCreator.new(params[:payload], client)
+      result = TrafficSpy::PayloadCreator.new(params[:payload], client)
       status  result.status
       result.body
     end
