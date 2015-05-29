@@ -1,5 +1,14 @@
 <h1>Dashboard</h1>
 
-<% @data.sorted_urls.each do |url, count| %>
-  <h2><%= url %> occurs <%= count %> times</h2>
-<%end %>
+<%= erb :_sorted_urls %>
+
+<%= erb :_url_avg_response_times %>
+
+<%= erb :_resolution_breakdown %>
+
+<%= erb :_browser_breakdown %>
+
+<%= erb :_platform_breakdown %>
+
+<%= erb :_events %>
+

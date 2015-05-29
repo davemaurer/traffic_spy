@@ -1,0 +1,5 @@
+<ol>
+  <% @data.sorted_urls.each do |url, count| %>
+    <li><a href="<%= @data.path(url) %>"><%= url %></a> : <%= count %> request(s)</li>
+  <%end %>
+</ol>
