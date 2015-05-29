@@ -21,5 +21,17 @@ module TrafficSpy
       status  result.status
       result.body
     end
+
+    get '/sources/:id' do |id|
+      client = Client.where(identifier: id).first
+      @data = Dashboard.new(client)
+      erb @data.view
+
+      # if client
+      #   erb :dashboard
+      # else
+      #   erb :invalid_client
+      # end
+    end
   end
 end
