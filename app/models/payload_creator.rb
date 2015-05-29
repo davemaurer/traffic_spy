@@ -11,7 +11,7 @@ module TrafficSpy
 
     def process(json, client)
       if registered?(client)
-        make(json)
+        make(json, client)
       else
         @status = 403
         @body = "URL not recognized"
@@ -32,11 +32,11 @@ module TrafficSpy
       Digest::SHA1.hexdigest(string) if string
     end
 
-    def make(json)
+    def make(json, client)
       sha = create_sha(json)
       data = parse_json(json)
       data = {} if data == nil
-      payload = Payload.new({url: data["url"], sha:sha})
+      payload = Payload.new({url: data["url"], sha:sha, client_id: client.first.id})
       if payload.save
         @status = 200
       else
