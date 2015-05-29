@@ -19,9 +19,7 @@ module TrafficSpy
     end
 
     def registered?(client)
-      if client.first
-        Client.exists?(identifier: client.first.identifier)
-      end
+      Client.exists?(identifier: client.identifier) if client
     end
 
     def parse_json(json)
@@ -34,14 +32,9 @@ module TrafficSpy
 
     def make(json, client)
       sha = create_sha(json)
-      data = parse_json(json)
-      data = {} if data == nil
-      payload = Payload.new({url: data["url"], sha:sha, client_id: client.first.id})
-      if payload.save
-        @status = 200
-      else
-        checker(payload, sha)
-      end
+      json ? data = parse_json(json) : data = {}
+      payload = Payload.new({url: data["url"], sha:sha, client_id: client.id})
+      payload.save ? @status = 200 : checker(payload, sha)
     end
 
     def checker(payload, sha)
