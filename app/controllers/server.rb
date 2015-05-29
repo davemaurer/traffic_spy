@@ -29,7 +29,8 @@ module TrafficSpy
     end
 
     get '/sources/:id/urls/:path' do |id, path|
-      client = Client.find_by(identifier: id)
+      @client = Client.find_by(identifier: id)
+      @client.take_path(path)
       erb :url
     end
 
