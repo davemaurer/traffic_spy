@@ -12,7 +12,7 @@ module TrafficSpy
         @status = 200
         @body = {'identifier':"#{client.identifier}"}.to_json
       else
-        checker(client)
+        checker(client) # @status, @body = [status, body]
       end
     end
 
@@ -30,14 +30,16 @@ module TrafficSpy
         @status = 400
         @body = "Make sure you enter an identifier"
       end
-    end
+    end # return array of status and body
 
-    def responses
-      {
-        "taken" => 403,
-        "blank" => 400
-      }
-    end
+    # def responses
+    #   {
+    #     "taken" => 403,
+    #     "blank" => 400
+    #   }
+    # end
+
+
 
   end
 end

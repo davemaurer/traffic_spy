@@ -1,0 +1,5 @@
+<ol>
+  <% @data.url_avg_response_times.each do |url, time|  %>
+    <li><a href="<%= @data.path(url) %>"><%= url %></a> had an avg rt of <%= time.to_i %></li>
+  <%end %>
+</ol>

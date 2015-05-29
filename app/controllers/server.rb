@@ -11,26 +11,35 @@ module TrafficSpy
 
     post '/sources' do
       result = TrafficSpy::ClientCreator.new(params)
-      status result.status
-      result.body
+      status  result.status
+      body    result.body
     end
 
     post '/sources/:id/data' do |id|
-      client = Client.where(identifier: id).first
+      client = Client.find_by(identifier: id)
       result = TrafficSpy::PayloadCreator.new(params[:payload], client)
       status  result.status
-      result.body
+      body    result.body
     end
 
     get '/sources/:id' do |id|
-      client = Client.where(identifier: id).first
+      client = Client.find_by(identifier: id)
       @data = Dashboard.new(client)
       erb @data.view
     end
 
     get '/sources/:id/urls/:path' do |id, path|
-      client = Client.where(identifier: id).first
+      client = Client.find_by(identifier: id)
+      erb :url
+    end
 
+    get '/sources/:id/events/:event' do |id, event|
+      client = Client.find_by(identifier: id)
+      erb :event
+    end
+
+    get '/sources/:id/events' do |id|
+      erb :events
     end
   end
 end
