@@ -3,6 +3,7 @@ require 'uri'
 module TrafficSpy
   class Dashboard
     attr_reader :client
+
     def initialize(client)
       @client = client
     end
