@@ -9,20 +9,32 @@ class Client < ActiveRecord::Base
     path ? @url = (root_url + "/" + path) : @url = root_url
   end
 
+  def url_payloads
+    payloads.where(url: @url)
+  end
+
   def longest_response
-    payloads.where(url: @url).maximum(:responded_in)
+    url_payloads.maximum(:responded_in)
   end
 
   def shortest_response
-    payloads.where(url: @url).minimum(:responded_in)
+    url_payloads.minimum(:responded_in)
   end
 
   def average_response
-    payloads.where(url: @url).average(:responded_in)
+    url_payloads.average(:responded_in)
   end
 
   def http_verbs
-    payloads.where(url: @url).uniq.pluck(:request_type)
+    url_payloads.uniq.pluck(:request_type)
+  end
+
+  def popular_referrers
+    url_payloads.group(:referred_by).order('count_referred_by desc').count(:referred_by).first(3)
+  end
+
+  def popular_browsers
+    url_payloads.group(:browser).order('count_browser desc').count(:browser).first(3)
   end
 end
 
