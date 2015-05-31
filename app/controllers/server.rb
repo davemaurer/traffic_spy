@@ -1,6 +1,21 @@
 require 'uri'
 module TrafficSpy
   class Server < Sinatra::Base
+
+    helpers do
+      def protected!
+        return if authorized?
+        headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+        halt 401, "Not authorized\n"
+      end
+
+      def authorized?
+        @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+        @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [@client.identifier, @client.identifier + 'pass']
+      end
+
+    end
+
     get '/' do
       erb :index
     end
@@ -26,6 +41,7 @@ module TrafficSpy
     get '/sources/:id' do |id|
       get_client(id)
       if @client
+        protected!
         erb :dashboard
       else
         @error = "The Identifier '#{id}' does not exist."
@@ -37,6 +53,7 @@ module TrafficSpy
       get_client(id)
       @client.take_path(splat) if @client
       if @client && @client.path_exists?
+        protected!
         erb :url
       elsif @client
         @error = "The path '/#{splat}' has not been requested"
@@ -51,9 +68,11 @@ module TrafficSpy
       get_client(id)
       @client.take_event(event) if @client
       if @client && @client.event_exists?
+        protected!
         erb :event
       elsif @client
         @error = "The event '#{event}' has not been defined"
+        @event_link = "/sources/#{id}/events"
         erb :error
       else
         @error = "The Identifier '#{id}' does not exist."
@@ -64,6 +83,7 @@ module TrafficSpy
     get '/sources/:id/events' do |id|
       get_client(id)
       if @client
+        protected!
         erb :events
       else
         @error = "The Identifier '#{id}' does not exist."
