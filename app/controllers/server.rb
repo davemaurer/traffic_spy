@@ -4,9 +4,11 @@ module TrafficSpy
 
     helpers do
       def protected!
+        if ENV["RACK_ENV"] == 'development'
         return if authorized?
         headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
         halt 401, "Not authorized\n"
+        end
       end
 
       def authorized?

@@ -30,3 +30,7 @@ class ControllerTest < Minitest::Test
   include Rack::Test::Methods
 end
 
+class FeatureTest < Minitest::Test
+  include Capybara::DSL
+  include Rack::Test::Methods
+end
