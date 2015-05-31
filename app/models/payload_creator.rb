@@ -1,5 +1,6 @@
 require 'digest/sha1'
 require 'useragent'
+
 module TrafficSpy
   class PayloadCreator
     attr_accessor :status, :body

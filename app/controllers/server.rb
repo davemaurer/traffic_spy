@@ -14,9 +14,24 @@ module TrafficSpy
         @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [@client.identifier, @client.identifier + 'pass']
       end
 
+      def json_dashboard
+        data = []
+        data << @client.sorted_urls
+        data << @client.url_avg_response_times
+        data << @client.resolution_breakdown
+        data << @client.browser_breakdown
+        data << @client.platform_breakdown
+        data << @client.events
+        data.to_json
+      end
+
+      def get_client(id)
+        @client = TrafficSpy::Client.find_by(identifier: id)
+      end
+
     end
 
-    get '/' do
+    get '/?' do
       erb :index
     end
 
@@ -25,28 +40,36 @@ module TrafficSpy
       erb :error
     end
 
-    post '/sources' do
+    post '/sources/?' do
       result = TrafficSpy::ClientCreator.new(params)
       status  result.status
       body    result.body
     end
 
-    post '/sources/:id/data' do |id|
+    post '/sources/:id/data/?' do |id|
       get_client(id)
       result = TrafficSpy::PayloadCreator.new(params[:payload], @client)
       status  result.status
       body    result.body
     end
 
-    get '/sources/:id' do |id|
-      get_client(id)
-      if @client
-        protected!
-        erb :dashboard
+    get '/sources/:id/?' do |id|
+      id_path = id.split(".")
+      if id_path.last == "json"
+        content_type :json
+        get_client(id_path.first)
+        json_dashboard
       else
-        @error = "The Identifier '#{id}' does not exist."
-        erb :error
+        get_client(id)
+        if @client
+          protected!
+          erb :dashboard
+        else
+          @error = "The Identifier '#{id}' does not exist."
+          erb :error
+        end
       end
+
     end
 
     get '/sources/:id/urls/*' do |id, splat|
@@ -64,7 +87,7 @@ module TrafficSpy
       end
     end
 
-    get '/sources/:id/events/:event' do |id, event|
+    get '/sources/:id/events/:event/?' do |id, event|
       get_client(id)
       @client.take_event(event) if @client
       if @client && @client.event_exists?
@@ -80,21 +103,50 @@ module TrafficSpy
       end
     end
 
-    get '/sources/:id/events' do |id|
+    get '/sources/:id/events/?' do |id|
       get_client(id)
-      if @client
-        protected!
+      if @client && @client.has_events?
         erb :events
+      elsif @client
+        @error = "No Events have been defined"
+        erb :error
       else
         @error = "The Identifier '#{id}' does not exist."
         erb :error
       end
     end
 
-    private
+    get '/sources/:id/urls/?' do |id|
+      get_client(id)
+      if @client
+        protected!
+        erb :urls
+      else
+        @error = "The Identifier '#{id}' does not exist."
+        erb :error
+      end
+    end
 
-    def get_client(id)
-      @client = TrafficSpy::Client.find_by(identifier: id)
+    get '/sources/:id/urls.json' do |id|
+      get_client(id)
+      content_type :json
+      if @client
+        @client.sorted_urls.to_json
+      else
+        @error = "The Identifier '#{id}' does not exist."
+        erb :error
+      end
+    end
+
+    get '/sources/:id/events.json' do |id|
+      get_client(id)
+      content_type :json
+      if @client
+        @client.events.to_json
+      else
+        @error = "The Identifier '#{id}' does not exist."
+        erb :error
+      end
     end
   end
 end
