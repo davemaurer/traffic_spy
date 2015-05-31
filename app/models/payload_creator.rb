@@ -61,11 +61,6 @@ module TrafficSpy
       end
     end
 
-    # def webroot(payload)
-    #   data = JSON.parse(payload)
-    #   website = URI(data["url"])
-    #   website.scheme + "://" + website.host
-    # end
   end
 end
 
