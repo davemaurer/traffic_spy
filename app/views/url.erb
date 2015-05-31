@@ -1,16 +1,10 @@
-<h1>Longest Response</h1>
+<h2>Longest Response Time: <ins><%= @client.longest_response %> ms</ins></h2>
 
-<%= @client.longest_response %>
+<h2>Shortest Response Time: <ins><%= @client.shortest_response %> ms</ins></h2>
 
-<h1>Shortest Response</h1>
+<h2>Average Response Time: <ins><%= @client.average_response %> ms</ins></h2>
 
-<%= @client.shortest_response %>
-
-<h1>Average Response</h1>
-
-<%= @client.average_response %>
-
-<h1>HTTP Verbs</h1>
+<h2>HTTP Verbs</h2>
 
 <% @client.http_verbs.each do |verb| %>
   <ul>
@@ -18,7 +12,7 @@
   </ul>
 <% end %>
 
-<h1>Most Popular Referrers</h1>
+<h2>Most Popular Referrers</h2>
 
 <% @client.popular_referrers.each do |url, count| %>
   <ul>
@@ -26,11 +20,21 @@
   </ul>
 <% end %>
 
-<h1>Most Popular Browsers</h1>
+<h2>Most Popular Browsers</h2>
 
 <% @client.popular_browsers.each do |browser, count| %>
   <ul>
     <li><%= browser %></li>
   </ul>
 <% end %>
+
+<h2>Most Popular Platforms</h2>
+
+<% @client.popular_platforms.each do |platform, count| %>
+  <ul>
+    <li><%= platform %></li>
+  </ul>
+<% end %>
+
+
 

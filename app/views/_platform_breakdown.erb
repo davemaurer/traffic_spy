@@ -1,6 +1,8 @@
+<h2>Platforms Across All Requests:</h2>
+
 <ul>
-  <% @data.platform_breakdown.each do |platform, count| %>
-    <li><%= platform %> <%= count %></li>
+  <% @client.platform_breakdown.each do |platform, count| %>
+    <li><%= platform %> : <%= count %></li>
   <% end %>
 </ul>
 

@@ -1,14 +1,25 @@
-<h1>Dashboard</h1>
+<h1 id="client-name"><ins><%= @client.identifier.upcase %></ins></h1>
 
+<div class="dashboard-panel lefty">
 <%= erb :_sorted_urls %>
+</div>
 
+<div class="dashboard-panel righty">
 <%= erb :_url_avg_response_times %>
+</div>
 
+<div class="dashboard-panel lefty">
 <%= erb :_resolution_breakdown %>
+</div>
 
+<div class="dashboard-panel righty">
 <%= erb :_browser_breakdown %>
+</div>
 
+<div class="dashboard-panel lefty">
 <%= erb :_platform_breakdown %>
+</div>
 
+<div class="dashboard-panel righty">
 <%= erb :_events %>
-
+</div>
