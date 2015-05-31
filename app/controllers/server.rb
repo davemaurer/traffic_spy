@@ -4,9 +4,11 @@ module TrafficSpy
 
     helpers do
       def protected!
-        return if authorized?
-        headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-        halt 401, "Not authorized\n"
+        if ENV["RACK_ENV"] == 'development'
+          return if authorized?
+          headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+          halt 401, "Not authorized\n"
+        end
       end
 
       def authorized?
@@ -28,7 +30,6 @@ module TrafficSpy
       def get_client(id)
         @client = TrafficSpy::Client.find_by(identifier: id)
       end
-
     end
 
     get '/?' do
@@ -55,21 +56,15 @@ module TrafficSpy
 
     get '/sources/:id/?' do |id|
       id_path = id.split(".")
-      if id_path.last == "json"
-        content_type :json
-        get_client(id_path.first)
-        json_dashboard
+      redirect to ("/sources/#{id_path.first}/json") if id_path.last == "json"
+      get_client(id)
+      if @client
+        protected!
+        erb :dashboard
       else
-        get_client(id)
-        if @client
-          protected!
-          erb :dashboard
-        else
-          @error = "The Identifier '#{id}' does not exist."
-          erb :error
-        end
+        @error = "The Identifier '#{id}' does not exist."
+        erb :error
       end
-
     end
 
     get '/sources/:id/urls/*' do |id, splat|
@@ -121,6 +116,18 @@ module TrafficSpy
       if @client
         protected!
         erb :urls
+      else
+        @error = "The Identifier '#{id}' does not exist."
+        erb :error
+      end
+    end
+
+    get '/sources/:id/json' do |id|
+      get_client(id)
+      if @client
+        protected!
+        content_type :json
+        json_dashboard
       else
         @error = "The Identifier '#{id}' does not exist."
         erb :error
