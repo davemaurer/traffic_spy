@@ -12,34 +12,24 @@ module TrafficSpy
         @status = 200
         @body = {"identifier":"#{client.identifier}"}.to_json
       else
-        checker(client) # @status, @body = [status, body]
+        result = checker(client)
+        @status = result.first
+        @body = result.last
       end
     end
 
     def checker(client)
+      result = [400]
       if Client.exists?(identifier: client.identifier)
-        @status = 403
-        @body = "Identifier already exists"
+        result = [403, "Identifier already exists"]
       elsif client.identifier == nil && client.root_url == nil
-        @status = 400
-        @body = "Please enter an identifier and rootUrl"
+        result << "Please enter an identifier and rootUrl"
       elsif client.root_url == nil
-        @status = 400
-        @body = "Make sure you enter a rootUrl"
+        result << "Make sure you enter a rootUrl"
       else
-        @status = 400
-        @body = "Make sure you enter an identifier"
+        result << "Make sure you enter an identifier"
       end
-    end # return array of status and body
-
-    # def responses
-    #   {
-    #     "taken" => 403,
-    #     "blank" => 400
-    #   }
-    # end
-
-
-
+      result
+    end
   end
 end
