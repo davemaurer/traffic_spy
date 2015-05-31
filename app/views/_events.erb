@@ -1,5 +1,7 @@
-<ol>
-  <% @data.events.each do |event, count| %>
-    <li><a href="<%= @data.event_path(event) %>"><%= event %></a> : <%= count %> request(s)</li>
+<h2>Your Events:</h2>
+
+<ul>
+  <% @client.events.each do |event, count| %>
+    <li><a href="<%= @client.event_path(event) %>"><%= event %></a> : <%= count %> request(s)</li>
   <%end %>
-</ol>
+</ul>

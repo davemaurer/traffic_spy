@@ -1,0 +1,5 @@
+<ul>
+  <% @client.hourly_breakdown.each do |hour, count|  %>
+    <li><%= hour %>:00 - <%= hour %>:59 : <%= count %> requests</li>
+  <%end %>
+</ul>

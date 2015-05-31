@@ -1,0 +1,88 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Traffic Spy</title>
+  <style>
+
+    #title {
+      margin: 30px;
+      opacity: 0.9;
+      filter: alpha(opacity=90);
+      background-color: slategrey;
+      font-size: 2em;
+      text-align: center;
+      color: whitesmoke;
+      height: 80px
+    }
+
+    #content-space {
+      margin: 30px;
+      background-color: #ffffff;
+      border: 1px solid black;
+      opacity: 0.8;
+      filter: alpha(opacity=80); /* For IE8 and earlier */
+    }
+
+    #error-message {
+      text-align: center;
+    }
+
+    #client-name {
+      font-size: 3em;
+    }
+
+    /*.lefty {*/
+      /*float: left;*/
+    /*}*/
+
+    /*.righty {*/
+      /*float: right;*/
+      /*text-align: right;*/
+    /*}*/
+
+    /*.dashboard-panel {*/
+      /*margin: 30px;*/
+      /*background-color: #ffffff;*/
+      /*border: 1px solid black;*/
+    /*}*/
+
+    h1 {
+      text-align: center;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    li {
+      font-size: 1.2em;
+    }
+
+    body {
+      font-size: 16px;
+      font-family: Helvetica, sans-serif;
+      background-image: url("http://i.huffpost.com/gen/1314235/images/o-TRAFFIC-JAM-facebook.jpg");
+    }
+
+    a {
+      color: royalblue;
+    }
+
+    a:hover {
+      color: darkred;
+      transition: .4s;
+    }
+
+  </style>
+</head>
+<body>
+<div id="title">
+  <h1>Traffic Spy</h1>
+</div>
+<div id="content-space">
+<div id="content">
+<%= yield %>
+</div>
+</div>
+</body>
+</html>

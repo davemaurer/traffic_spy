@@ -1,6 +1,8 @@
+<h2>Resolutions Across All Requests:</h2>
+
 <ul>
-  <% @data.resolution_breakdown.each do |resolution, count| %>
-    <li><%= resolution %> <%= count %></li>
+  <% @client.resolution_breakdown.each do |resolution, count| %>
+    <li><%= resolution %> : <%= count %></li>
   <% end %>
 </ul>
 
