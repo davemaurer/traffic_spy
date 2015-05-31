@@ -93,6 +93,11 @@ module TrafficSpy
       hours.each_with_object(Hash.new(0)) { |hour, hash| hash[hour] += 1 }
     end
 
+    def has_events?
+      payloads.count > 0
+    end
+
+
     private
 
     def url_payloads

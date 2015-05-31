@@ -1,3 +1,7 @@
 <h1>Sorry, Dawg</h1>
 
 <h2 id="error-message"><%= @error %></h2>
+
+<% if @event_link %>
+  <h3><a href="<%= @event_link %>">Back to Your Events</a></h3>
+<% end %>
