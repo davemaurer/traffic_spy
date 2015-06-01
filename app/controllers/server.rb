@@ -1,7 +1,6 @@
 require 'uri'
 module TrafficSpy
   class Server < Sinatra::Base
-
     helpers do
       def protected!
         if ENV["RACK_ENV"] == 'development'

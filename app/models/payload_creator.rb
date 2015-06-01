@@ -36,9 +36,9 @@ module TrafficSpy
       sha = create_sha(json)
       json ? data = parse_json(json) : data = {}
       user_agent = UserAgent.parse(data["userAgent"])
-      payload = TrafficSpy::Payload.new(url: data["url"], # client.payloads.new
+      payload = TrafficSpy::Payload.new(url: data["url"],
                             sha:sha,
-                            client_id: client.id, # not needed
+                            client_id: client.id,
                             responded_in: data["respondedIn"],
                             resolution: "#{data['resolutionWidth']} x #{data['resolutionHeight']}",
                             browser: user_agent.browser,
@@ -49,10 +49,10 @@ module TrafficSpy
                             event_name: data["eventName"]
                             )
       payload.save ? @status = 200 : checker(payload, sha)
-    end #create separate object for handling payload data
+    end
 
     def checker(payload, sha)
-      if payload.url == nil #find a different way to determine4 if payload is missing
+      if payload.url == nil
         @status = 400
         @body = "Payload missing"
       elsif TrafficSpy::Payload.exists?(sha: sha)
@@ -60,7 +60,6 @@ module TrafficSpy
         @body = "Payload already received"
       end
     end
-
   end
 end
 
