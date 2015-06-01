@@ -25,4 +25,15 @@ class ViewErrorsTest < FeatureTest
     assert page.has_content? "No Events have been defined"
   end
 
+  def test_events_page_w_no_source
+    visit "/sources/faceboo/events"
+    assert page.has_content? "The Identifier 'faceboo' does not exist."
+  end
+
+  def test_404
+    visit "/random"
+    assert page.has_content? "404 : Page not found"
+  end
+
+
 end

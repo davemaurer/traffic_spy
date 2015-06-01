@@ -15,6 +15,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'pry'
   gem 'useragent'
+  gem 'simplecov'
 end
 
 group :evaluations do
