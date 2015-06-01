@@ -19,4 +19,24 @@ class ViewDashboardTest < FeatureTest
     assert page.has_content? "1920 x 1280"
   end
 
+  def test_viewing_dashboard_json
+    visit "/sources/jumpstartlab.json"
+    assert_equal '/sources/jumpstartlab/json', current_path
+    assert page.has_content? "http://jumpstartlab.com/blog"
+    assert page.has_content? "socialLogin"
+    assert page.has_content? "Macintosh"
+    assert page.has_content? "Chrome"
+    assert page.has_content? "1920 x 1280"
+  end
+
+  def test_viewing_dashboard_json_undefined
+    visit "/sources/jumpstartla.json"
+    assert page.has_content? "The Identifier 'jumpstartla' does not exist."
+  end
+
+  def test_landing_page
+    visit "/"
+    assert page.has_content? "Hello, Traffic Spyer"
+  end
+
 end

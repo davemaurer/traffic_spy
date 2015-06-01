@@ -18,4 +18,9 @@ class ViewURLTest < FeatureTest
     assert page.has_content? "Chrome"
   end
 
+  def test_viewing_all_urls_undefined_client
+    visit "/sources/faceboo/urls"
+    assert page.has_content? "The Identifier 'faceboo' does not exist."
+  end
+
 end

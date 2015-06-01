@@ -21,4 +21,27 @@ class ViewEventTest < FeatureTest
     assert page.has_content? "socialLogin"
     assert page.has_content? "1 request(s)"
   end
+
+  def test_viewing_all_events_undefined_event
+    visit "/sources/jumpstartlab/events/fakeEvent"
+    assert page.has_content? "The event 'fakeEvent' has not been defined"
+  end
+
+  def test_viewing_all_events_undefined_client
+    visit "/sources/faceboo/events/fakeEvent"
+    assert page.has_content? "The Identifier 'faceboo' does not exist."
+  end
+
+  def test_viewing_event_json
+    visit "/sources/jumpstartlab/events.json"
+    assert_equal '/sources/jumpstartlab/events.json', current_path
+    assert page.has_content? "socialLogin"
+  end
+
+  def test_viewing_event_json_undefined
+    visit "/sources/jumpstartla/events.json"
+    assert page.has_content? "The Identifier 'jumpstartla' does not exist."
+  end
+
+
 end
