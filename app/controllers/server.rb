@@ -30,6 +30,10 @@ module TrafficSpy
       def get_client(id)
         @client = TrafficSpy::Client.find_by(identifier: id)
       end
+
+      def no_id(id)
+        @error = "The Identifier '#{id}' does not exist."
+      end
     end
 
     get '/?' do
@@ -62,7 +66,7 @@ module TrafficSpy
         protected!
         erb :dashboard
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
@@ -77,7 +81,7 @@ module TrafficSpy
         @error = "The path '/#{splat}' has not been requested"
         erb :error
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
@@ -93,7 +97,7 @@ module TrafficSpy
         @event_link = "/sources/#{id}/events"
         erb :error
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
@@ -101,12 +105,13 @@ module TrafficSpy
     get '/sources/:id/events/?' do |id|
       get_client(id)
       if @client && @client.has_events?
+        protected!
         erb :events
       elsif @client
         @error = "No Events have been defined"
         erb :error
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
@@ -117,7 +122,7 @@ module TrafficSpy
         protected!
         erb :urls
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
@@ -129,7 +134,7 @@ module TrafficSpy
         content_type :json
         json_dashboard
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
@@ -138,20 +143,22 @@ module TrafficSpy
       get_client(id)
       content_type :json
       if @client
+        protected!
         @client.sorted_urls.to_json
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
 
     get '/sources/:id/events.json' do |id|
       get_client(id)
+      protected!
       content_type :json
       if @client
         @client.events.to_json
       else
-        @error = "The Identifier '#{id}' does not exist."
+        no_id(id)
         erb :error
       end
     end
